@@ -15,10 +15,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        var restaurants = [Restaurant]()
+        var reviews = [String:Review]()
+        HTTPConnector.getRestaurantsDataFrom(url:"https://restaurants-f64d7.firebaseio.com/restaurants.json"){outData in
+            restaurants = JSONParser.parseResaurantsData(data: outData)
+            
+            DispatchQueue.main.async {
+                self.configureControllers(restaurants: restaurants)
+            }
+            
+        }
+        HTTPConnector.getReviewsDataFrom(url: "https://restaurants-f64d7.firebaseio.com/reviews.json"){ outData in
+            reviews = JSONParser.parseReviewsData(data: outData)
+            
+        }
+        
+        
         // Override point for customization after application launch.
         return true
     }
 
+    func configureControllers(restaurants:[Restaurant]){
+        if (self.window?.rootViewController?.isKind(of: UITabBarController.self)) ?? false {
+            let tabBarController = self.window?.rootViewController as! UITabBarController
+            if (tabBarController.viewControllers?.first?.isKind(of: UINavigationController.self)) ?? false {
+                сonfigureAllRestaurantsViewController(tabBarController: tabBarController, restaurants: restaurants)
+                configureFavouriteViewConroller(tabBarController: tabBarController, restaurants: restaurants)
+            }
+            if (tabBarController.viewControllers?[2].isKind(of: MapViewController.self) ?? false){
+                configureMapViewController(tabBarController: tabBarController, restaurants: restaurants)
+                
+            }
+        }
+    }
+    
+    func configureMapViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
+        let mapViewController = tabBarController.viewControllers?[2] as! MapViewController
+        mapViewController.loadView()
+        let mapViewModel = MapViewModel(restaurants: restaurants)
+        mapViewController.mapViewModel = mapViewModel
+        mapViewController.test()
+    }
+    
+    func configureFavouriteViewConroller(tabBarController: UITabBarController,restaurants:[Restaurant]) {
+        let favouriteRestaurantsViewModel = FavouriteRestaurantsViewModel()
+        
+        let favRestaurants:[Restaurant] = [restaurants[0],restaurants[1]]
+        favouriteRestaurantsViewModel.fillItemStore(restaraunts: favRestaurants)
+        
+        
+        let favouriteRestaurantsNavigationController = tabBarController.viewControllers?[1] as! UINavigationController
+        if ((favouriteRestaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self))! ){
+            let favouriteRestaurantsViewController = favouriteRestaurantsNavigationController.viewControllers.first as! RestaurantsViewController
+            favouriteRestaurantsViewController.loadView()
+            favouriteRestaurantsViewController.restaurantViewModel = favouriteRestaurantsViewModel
+            favouriteRestaurantsViewController.reloadTableView()
+        }
+    }
+    
+    func сonfigureAllRestaurantsViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
+        let allRestaurantsViewModel = AllRestaurantsViewModel()
+        allRestaurantsViewModel.fillItemStore(restaraunts: restaurants)
+        let restaurantsNavigationController = tabBarController.viewControllers?.first as! UINavigationController
+        if (restaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self) ?? false){
+            let restaurantsViewController = restaurantsNavigationController.viewControllers.first as! RestaurantsViewController
+            restaurantsViewController.restaurantViewModel = allRestaurantsViewModel
+            restaurantsViewController.reloadTableView()
+        }
+    }
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -43,4 +110,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
