@@ -11,7 +11,7 @@ import UIKit
 class HTTPConnector: NSObject {
 
     
-    static func getRestaurantsDataFrom(url: String,completion: @escaping (Data) -> ()){
+    func getRestaurantsDataFrom(url: String,completion: @escaping (Data) -> ()){
         let testURL = URL(string:url)!
         var reqest = URLRequest(url: testURL)
         reqest.httpMethod = "GET"
@@ -32,7 +32,7 @@ class HTTPConnector: NSObject {
         task.resume()
     }
     
-    static func getReviewsDataFrom(url: String,completion: @escaping (Data) -> ()){
+    func getReviewsDataFrom(url: String,completion: @escaping (Data) -> ()){
         let testURL = URL(string:url)!
         var reqest = URLRequest(url: testURL)
         reqest.httpMethod = "GET"

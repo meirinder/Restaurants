@@ -8,13 +8,31 @@
 
 import UIKit
 
-class RestaurantTableViewCell: UITableViewCell {
+class RestaurantTableViewCell: UITableViewCell, UpdateImageProtocol {
 
     @IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var specificationLabel: UILabel!
     @IBOutlet weak var ratingView: UIView!
     @IBOutlet weak var ratingLabel: UILabel!
+    
+    weak var delegate: UpdateTableViewDelegate?
+    
+    func update(){
+        restaurantImageView.image = item.photo
+        delegate?.updateTableView()
+    }
+    
+    var item = Item()
+    
+    func setItem(){
+//        restaurantImageView.image = nil
+        restaurantNameLabel.text = item.name
+        specificationLabel.text = item.specification
+        ratingLabel.text = "\(item.rating)"
+        item.delegate = self
+        item.setImages()
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,4 +45,8 @@ class RestaurantTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+}
+
+protocol UpdateImageProtocol: class {
+    func update()
 }

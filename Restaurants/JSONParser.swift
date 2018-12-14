@@ -10,7 +10,7 @@ import UIKit
 
 class JSONParser: NSObject {
 
-    static func parseResaurantsData(data: Data) -> [Restaurant] {
+    func parseResaurantsData(data: Data) -> [Restaurant] {
         var restaurants = [Restaurant]()
         do{
             restaurants = try JSONDecoder().decode([Restaurant].self, from: data)
@@ -20,7 +20,7 @@ class JSONParser: NSObject {
         return restaurants
     }
     
-    static func parseReviewsData(data: Data) -> [String:Review] {
+    func parseReviewsData(data: Data) -> [String:Review] {
         var safeReviews = [String:Safe<Review>]()
         var reviews = [String:Review]()
         do{

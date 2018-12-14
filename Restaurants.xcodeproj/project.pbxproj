@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4288C2721C3A2D3002C69B9 /* ImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */; };
 		C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0A921C1100A000CEEED /* DetailViewController.swift */; };
 		C462C0AC21C11024000CEEED /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AB21C11024000CEEED /* MapViewController.swift */; };
 		C462C0AE21C11054000CEEED /* RestaurantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBuilder.swift; sourceTree = "<group>"; };
 		C462C0A921C1100A000CEEED /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C462C0AB21C11024000CEEED /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsViewModel.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				C4D8F2B621C0F1ED000CFF34 /* Main.storyboard */,
 				C462C0C321C11271000CEEED /* HTTPConnector.swift */,
 				C462C0C521C11288000CEEED /* JSONParser.swift */,
+				C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */,
 				C4D8F2C621C10F91000CFF34 /* ViewControllers */,
 				C462C0A721C10FC8000CEEED /* ViewModels */,
 				C462C0A821C10FD1000CEEED /* Model */,
@@ -250,6 +253,7 @@
 				C462C0C621C11288000CEEED /* JSONParser.swift in Sources */,
 				C462C0B621C110AC000CEEED /* FavouriteRestaurantsViewModel.swift in Sources */,
 				C462C0C221C11251000CEEED /* Item.swift in Sources */,
+				C4288C2721C3A2D3002C69B9 /* ImageBuilder.swift in Sources */,
 				C462C0AC21C11024000CEEED /* MapViewController.swift in Sources */,
 				C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */,
 				C462C0B421C11096000CEEED /* AllRestaurantsViewModel.swift in Sources */,

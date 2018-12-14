@@ -8,12 +8,26 @@
 
 import UIKit
 
-class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UpdateTableViewDelegate {
+    
+    
+    func updateTableView() {
+        DispatchQueue.main.async {
+            self.restaurantsTableView.reloadData()
+        }
+    }
+    
+    
     var restaurantViewModel = RestaurantsViewModel()
 
     
+    
     @IBOutlet weak var restaurantsTableView: UITableView!
     
+    @IBAction func test(_ sender: Any) {
+        restaurantViewModel.updateRestaurantsFromNet()
+//        reloadTableView()
+    }
     
     func reloadTableView() {
         restaurantsTableView.reloadData()
@@ -21,6 +35,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        restaurantViewModel.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -31,10 +46,8 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantCell") as! RestaurantTableViewCell
-        cell.ratingLabel.text = restaurantViewModel.restaurantRating(index: indexPath.row)
-        cell.restaurantNameLabel.text = restaurantViewModel.restaurantName(index: indexPath.row)
-        cell.specificationLabel.text = restaurantViewModel.restaurantSpecification(index: indexPath.row)
-        cell.restaurantImageView.image = restaurantViewModel.restaurantImage(index: indexPath.row)
+        cell.item = restaurantViewModel.itemStore[indexPath.row]
+        cell.setItem()
         return cell
     }
     
@@ -44,3 +57,6 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 }
 
 
+protocol UpdateTableViewDelegate: class {
+    func updateTableView()
+}

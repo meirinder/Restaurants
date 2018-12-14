@@ -16,21 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        var restaurants = [Restaurant]()
-        var reviews = [String:Review]()
-        HTTPConnector.getRestaurantsDataFrom(url:"https://restaurants-f64d7.firebaseio.com/restaurants.json"){outData in
-            restaurants = JSONParser.parseResaurantsData(data: outData)
-            
-            DispatchQueue.main.async {
-                self.configureControllers(restaurants: restaurants)
-            }
-            
-        }
-        HTTPConnector.getReviewsDataFrom(url: "https://restaurants-f64d7.firebaseio.com/reviews.json"){ outData in
-            reviews = JSONParser.parseReviewsData(data: outData)
-            
-        }
+//        var restaurantStore = RestaurantStore()
+//        var reviews = [String:Review]()
+        //
+//        HTTPConnector.getRestaurantsDataFrom(url:"https://restaurants-f64d7.firebaseio.com/restaurants.json"){outData in
+//            restaurants = JSONParser.parseResaurantsData(data: outData)
         
+//        
+//        }
+//        HTTPConnector.getReviewsDataFrom(url: "https://restaurants-f64d7.firebaseio.com/reviews.json"){ outData in
+//            reviews = JSONParser.parseReviewsData(data: outData)
+//
+//        }
+
         
         // Override point for customization after application launch.
         return true
@@ -52,31 +50,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func configureMapViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
         let mapViewController = tabBarController.viewControllers?[2] as! MapViewController
-        mapViewController.loadView()
+        //mapViewController.loadView()
         let mapViewModel = MapViewModel(restaurants: restaurants)
         mapViewController.mapViewModel = mapViewModel
-        mapViewController.test()
+       // mapViewController.test()
     }
     
     func configureFavouriteViewConroller(tabBarController: UITabBarController,restaurants:[Restaurant]) {
-        let favouriteRestaurantsViewModel = FavouriteRestaurantsViewModel()
-        
-        let favRestaurants:[Restaurant] = [restaurants[0],restaurants[1]]
-        favouriteRestaurantsViewModel.fillItemStore(restaraunts: favRestaurants)
-        
-        
+        let favouriteRestaurantsViewModel = FavouriteRestaurantsViewModel(restaurantStore: RestaurantStore())
         let favouriteRestaurantsNavigationController = tabBarController.viewControllers?[1] as! UINavigationController
-        if ((favouriteRestaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self))! ){
+        if ((favouriteRestaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self)) ?? false){
             let favouriteRestaurantsViewController = favouriteRestaurantsNavigationController.viewControllers.first as! RestaurantsViewController
-            favouriteRestaurantsViewController.loadView()
+          //  favouriteRestaurantsViewController.loadView()
             favouriteRestaurantsViewController.restaurantViewModel = favouriteRestaurantsViewModel
-            favouriteRestaurantsViewController.reloadTableView()
+           // favouriteRestaurantsViewController.reloadTableView()
         }
     }
     
     func сonfigureAllRestaurantsViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
-        let allRestaurantsViewModel = AllRestaurantsViewModel()
-        allRestaurantsViewModel.fillItemStore(restaraunts: restaurants)
+        let allRestaurantsViewModel = AllRestaurantsViewModel(restaurantStore: RestaurantStore())
         let restaurantsNavigationController = tabBarController.viewControllers?.first as! UINavigationController
         if (restaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self) ?? false){
             let restaurantsViewController = restaurantsNavigationController.viewControllers.first as! RestaurantsViewController

@@ -9,12 +9,15 @@
 import UIKit
 
 class Item: NSObject {
+    
     var name: String
     var specification: String
     var photo = UIImage()
     var photoURL: String
     var rating: Float
     
+    
+    weak var delegate: UpdateImageProtocol?
     override init() {
         self.name = ""
         self.specification = ""
@@ -44,6 +47,7 @@ class Item: NSObject {
             print("Download Finished")
             DispatchQueue.main.async() {
                 self.photo = UIImage(data: data)!
+                self.delegate?.update()
             }
         }
     }

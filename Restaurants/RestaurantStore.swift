@@ -9,26 +9,35 @@
 import UIKit
 
 class RestaurantStore: NSObject {
-    private var restaurantsList: [String]
+    private var restaurantsList: [Restaurant]
+    private let httpConnector = HTTPConnector()
+    private let jsonParser = JSONParser()
+    weak var delegate: UpdateRestaurantsProtocol?
+    
     
     override init() {
-        restaurantsList = [String]()
+        self.restaurantsList = []
     }
     
-    init(restaurants: [String]) {
+    init(restaurants: [Restaurant], delegate: UpdateRestaurantsProtocol) {
         self.restaurantsList = restaurants
     }
     
-    func setRestaurants(restaraunts: [String]) {
-        self.restaurantsList = restaraunts
-    }
-    
-    func restaurants() -> [String] {
+
+    func restaurants() -> [Restaurant] {
         return restaurantsList
     }
     
-    func updateRestaurants(){
-        
+    func updateRestaurantsFromNet(url: String){
+        httpConnector.getRestaurantsDataFrom(url: url){ outData in
+            self.restaurantsList = self.jsonParser.parseResaurantsData(data: outData)
+            
+            self.delegate?.updateData()
+        }
     }
 
+}
+
+protocol UpdateRestaurantsProtocol: class{
+    func updateData()
 }
