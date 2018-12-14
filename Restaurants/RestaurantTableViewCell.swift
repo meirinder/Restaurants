@@ -26,7 +26,7 @@ class RestaurantTableViewCell: UITableViewCell, UpdateImageProtocol {
     var item = Item()
     
     func setItem(){
-//        restaurantImageView.image = nil
+        restaurantImageView.image = item.photo
         restaurantNameLabel.text = item.name
         specificationLabel.text = item.specification
         ratingLabel.text = "\(item.rating)"

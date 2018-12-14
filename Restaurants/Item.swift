@@ -15,6 +15,7 @@ class Item: NSObject {
     var photo = UIImage()
     var photoURL: String
     var rating: Float
+    var loaded = false
     
     
     weak var delegate: UpdateImageProtocol?
@@ -35,24 +36,17 @@ class Item: NSObject {
     
     func setImages() {
         if let url = URL(string: photoURL){
-            downloadImage(from: url)
-        }
-    }
-    
-    private func downloadImage(from url: URL) {
-        print("Download Started")
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
-            print("Download Finished")
-            DispatchQueue.main.async() {
-                self.photo = UIImage(data: data)!
-                self.delegate?.update()
+            if !loaded{
+                loaded = true
+                let test = ImageBuilder()
+                test.getImageFromNet(url: url){ outImage in
+                    DispatchQueue.main.async() {
+                        self.photo = outImage
+                        self.delegate?.update()
+                    }
+                }
             }
         }
-    }
-    private func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
 
 }
