@@ -44,8 +44,8 @@ class ImageBuilder: NSObject {
             
             self.imageStore.updatePair(url: url, image: UIImage(data: data)!)
             
-            if imageStatus != nil{
-                switch imageStatus!{
+            if let imageStatus = imageStatus {
+                switch imageStatus{
                 case .loading(let completions):
                     for complet in completions{
                         complet(UIImage(data: data)!)

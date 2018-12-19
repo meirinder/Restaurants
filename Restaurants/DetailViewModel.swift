@@ -77,6 +77,13 @@ class DetailViewModel: NSObject, UpdateReviewsProtocol {
         return !isTappedCell[index]
     }
     
+    func itCellIsAdd(index: Int) -> Bool {
+        if index == reviewStore.reviews().count {
+            return true
+        }
+        return false
+    }
+    
     func countOfMessages() -> Int{
         return reviewStore.reviews().count
     }

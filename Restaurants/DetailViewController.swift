@@ -29,7 +29,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return detailViewModel.countOfMessages()
+        return detailViewModel.countOfMessages() + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -43,15 +43,21 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath) as? ReviewTableViewCell
+        if detailViewModel.itCellIsAdd(index: indexPath.row){
+       
+            return
+        }
         detailViewModel.tapCell(index: indexPath.row)
-//        tableView.reloadData()
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if detailViewModel.itCellIsAdd(index: indexPath.row){
+            let cell = reviewsTableView.dequeueReusableCell(withIdentifier: "AddReviewCell")
+            return cell!
+        }
         let cell = reviewsTableView.dequeueReusableCell(withIdentifier: "ReviewCell") as! ReviewTableViewCell
         cell.authorLabel.text = detailViewModel.authorAt(index: indexPath.row)
         cell.messageLabel.text = detailViewModel.messageAt(index: indexPath.row)
@@ -66,15 +72,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        reviewsTableView.rowHeight = UITableView.automaticDimension
-//        reviewsTableView.estimatedRowHeight = 50
- 
-        
         let restaurantLocation = CLLocationCoordinate2D(latitude: detailViewModel.location().lat!, longitude: detailViewModel.location().lon!)
-        
-        
-        
-        //Center the map on the place location
         restaurantLocationMapView.setCenter(restaurantLocation, animated: true)
 
         let sourceLocation = CLLocationCoordinate2D(latitude: detailViewModel.location().lat!, longitude: detailViewModel.location().lon!)
@@ -88,7 +86,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         detailViewModel.delegate = self
         prepareForDisplay()
         reviewsTableView.reloadData()
-        // Do any additional setup after loading the view.
     }
    
    

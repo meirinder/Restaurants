@@ -10,7 +10,7 @@ import UIKit
 
 class RatingView: UIView {
     private struct Constants {
-        static let plusLineWidth: CGFloat = 3.0
+        static let plusLineWidth: CGFloat = 2.0
         static let plusButtonScale: CGFloat = 0.6
         static let halfPointShift: CGFloat = 0.5
     }
@@ -33,14 +33,15 @@ class RatingView: UIView {
         let path = UIBezierPath(rect: rect)    //UIBezierPath(ovalIn: rect)
         UIColor.green.setFill()
         path.fill()
-
-        drawStar()
+        for i in 1..<6{
+            drawStar(x: (rect.size.width/6)*CGFloat(i),y: (rect.size.height/2),radius: (rect.size.height/2-2))
+        }
 
 
     }
     
-    func drawStar(){
-        let points = polygonPointArray(sides: 5, x: 80, y: 80, radius: 80, adjustment: 18)
+    func drawStar(x: CGFloat, y: CGFloat, radius: CGFloat){
+        let points = polygonPointArray(sides: 5, x: x, y: y, radius: radius, adjustment: 18)
         let plusPath = UIBezierPath()
         plusPath.lineWidth = Constants.plusLineWidth
         

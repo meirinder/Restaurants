@@ -12,6 +12,7 @@
 		C4288C2B21C77754002C69B9 /* HeaderForDetailViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2A21C77754002C69B9 /* HeaderForDetailViewControllerView.swift */; };
 		C4288C2D21C8BABB002C69B9 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2C21C8BABB002C69B9 /* ImageStore.swift */; };
 		C4288C2F21CA3F66002C69B9 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2E21CA3F66002C69B9 /* RatingView.swift */; };
+		C43C62CD21CA5FC200110009 /* AddReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C62CC21CA5FC200110009 /* AddReviewViewController.swift */; };
 		C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0A921C1100A000CEEED /* DetailViewController.swift */; };
 		C462C0AC21C11024000CEEED /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AB21C11024000CEEED /* MapViewController.swift */; };
 		C462C0AE21C11054000CEEED /* RestaurantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */; };
@@ -41,6 +42,7 @@
 		C4288C2A21C77754002C69B9 /* HeaderForDetailViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderForDetailViewControllerView.swift; sourceTree = "<group>"; };
 		C4288C2C21C8BABB002C69B9 /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
 		C4288C2E21CA3F66002C69B9 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		C43C62CC21CA5FC200110009 /* AddReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReviewViewController.swift; sourceTree = "<group>"; };
 		C462C0A921C1100A000CEEED /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C462C0AB21C11024000CEEED /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsViewModel.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				C4D8F2B221C0F1ED000CFF34 /* RestaurantsViewController.swift */,
 				C462C0A921C1100A000CEEED /* DetailViewController.swift */,
 				C462C0AB21C11024000CEEED /* MapViewController.swift */,
+				C43C62CC21CA5FC200110009 /* AddReviewViewController.swift */,
 				C4288C2821C77331002C69B9 /* ReviewTableViewCell.swift */,
 				C4D8F2C421C0FD20000CFF34 /* RestaurantTableViewCell.swift */,
 			);
@@ -269,6 +272,7 @@
 				C462C0B621C110AC000CEEED /* FavouriteRestaurantsViewModel.swift in Sources */,
 				C462C0C221C11251000CEEED /* Item.swift in Sources */,
 				C4288C2721C3A2D3002C69B9 /* ImageBuilder.swift in Sources */,
+				C43C62CD21CA5FC200110009 /* AddReviewViewController.swift in Sources */,
 				C462C0AC21C11024000CEEED /* MapViewController.swift in Sources */,
 				C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */,
 				C462C0B421C11096000CEEED /* AllRestaurantsViewModel.swift in Sources */,
