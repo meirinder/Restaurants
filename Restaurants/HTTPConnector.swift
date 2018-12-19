@@ -33,7 +33,12 @@ class HTTPConnector: NSObject {
     }
     
     func getReviewsDataFrom(url: String,completion: @escaping (Data) -> ()){
-        let testURL = URL(string:url)!
+        
+        let firstPath = url.dropLast(25)
+        let lastPath = url.dropFirst(url.count - 25)
+        
+        let encoded = lastPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        let testURL = URL(string:firstPath + encoded!)!
         var reqest = URLRequest(url: testURL)
         reqest.httpMethod = "GET"
         

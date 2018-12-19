@@ -19,7 +19,7 @@ class RestaurantStore: NSObject {
         self.restaurantsList = []
     }
     
-    init(restaurants: [Restaurant], delegate: UpdateRestaurantsProtocol) {
+    init(restaurants: [Restaurant]) {
         self.restaurantsList = restaurants
     }
     

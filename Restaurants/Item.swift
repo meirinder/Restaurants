@@ -16,6 +16,7 @@ class Item: NSObject {
     var photoURL: String
     var rating: Float
     var loaded = false
+    private let imageBuilder = ImageBuilder()
     
     
     weak var delegate: UpdateImageProtocol?
@@ -36,16 +37,15 @@ class Item: NSObject {
     
     func setImages() {
         if let url = URL(string: photoURL){
-            if !loaded{
-                loaded = true
-                let test = ImageBuilder()
-                test.getImageFromNet(url: url){ outImage in
+//            if !loaded{
+//                loaded = true
+                imageBuilder.getImageFromNet(url: url){ outImage in
                     DispatchQueue.main.async() {
                         self.photo = outImage
                         self.delegate?.update()
                     }
                 }
-            }
+//            }
         }
     }
 

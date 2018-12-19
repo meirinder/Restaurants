@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C4288C2721C3A2D3002C69B9 /* ImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */; };
+		C4288C2921C77331002C69B9 /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2821C77331002C69B9 /* ReviewTableViewCell.swift */; };
+		C4288C2B21C77754002C69B9 /* HeaderForDetailViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2A21C77754002C69B9 /* HeaderForDetailViewControllerView.swift */; };
+		C4288C2D21C8BABB002C69B9 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2C21C8BABB002C69B9 /* ImageStore.swift */; };
+		C4288C2F21CA3F66002C69B9 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4288C2E21CA3F66002C69B9 /* RatingView.swift */; };
 		C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0A921C1100A000CEEED /* DetailViewController.swift */; };
 		C462C0AC21C11024000CEEED /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AB21C11024000CEEED /* MapViewController.swift */; };
 		C462C0AE21C11054000CEEED /* RestaurantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */; };
@@ -33,6 +37,10 @@
 
 /* Begin PBXFileReference section */
 		C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBuilder.swift; sourceTree = "<group>"; };
+		C4288C2821C77331002C69B9 /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
+		C4288C2A21C77754002C69B9 /* HeaderForDetailViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderForDetailViewControllerView.swift; sourceTree = "<group>"; };
+		C4288C2C21C8BABB002C69B9 /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
+		C4288C2E21CA3F66002C69B9 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		C462C0A921C1100A000CEEED /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C462C0AB21C11024000CEEED /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		C462C0AD21C11054000CEEED /* RestaurantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsViewModel.swift; sourceTree = "<group>"; };
@@ -86,6 +94,7 @@
 		C462C0A821C10FD1000CEEED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C4288C2C21C8BABB002C69B9 /* ImageStore.swift */,
 				C462C0B721C110D0000CEEED /* Restaurant */,
 				C462C0B821C110DC000CEEED /* Review */,
 			);
@@ -143,6 +152,8 @@
 				C462C0C321C11271000CEEED /* HTTPConnector.swift */,
 				C462C0C521C11288000CEEED /* JSONParser.swift */,
 				C4288C2621C3A2D3002C69B9 /* ImageBuilder.swift */,
+				C4288C2A21C77754002C69B9 /* HeaderForDetailViewControllerView.swift */,
+				C4288C2E21CA3F66002C69B9 /* RatingView.swift */,
 				C4D8F2C621C10F91000CFF34 /* ViewControllers */,
 				C462C0A721C10FC8000CEEED /* ViewModels */,
 				C462C0A821C10FD1000CEEED /* Model */,
@@ -159,6 +170,7 @@
 				C4D8F2B221C0F1ED000CFF34 /* RestaurantsViewController.swift */,
 				C462C0A921C1100A000CEEED /* DetailViewController.swift */,
 				C462C0AB21C11024000CEEED /* MapViewController.swift */,
+				C4288C2821C77331002C69B9 /* ReviewTableViewCell.swift */,
 				C4D8F2C421C0FD20000CFF34 /* RestaurantTableViewCell.swift */,
 			);
 			name = ViewControllers;
@@ -245,10 +257,13 @@
 				C4D8F2C521C0FD20000CFF34 /* RestaurantTableViewCell.swift in Sources */,
 				C462C0AE21C11054000CEEED /* RestaurantsViewModel.swift in Sources */,
 				C462C0B021C11064000CEEED /* DetailViewModel.swift in Sources */,
+				C4288C2D21C8BABB002C69B9 /* ImageStore.swift in Sources */,
 				C4D8F2B121C0F1ED000CFF34 /* AppDelegate.swift in Sources */,
 				C462C0BC21C111D3000CEEED /* Review.swift in Sources */,
+				C4288C2B21C77754002C69B9 /* HeaderForDetailViewControllerView.swift in Sources */,
 				C462C0BE21C1122F000CEEED /* RestaurantStore.swift in Sources */,
 				C4D8F2B321C0F1ED000CFF34 /* RestaurantsViewController.swift in Sources */,
+				C4288C2F21CA3F66002C69B9 /* RatingView.swift in Sources */,
 				C462C0C421C11271000CEEED /* HTTPConnector.swift in Sources */,
 				C462C0C621C11288000CEEED /* JSONParser.swift in Sources */,
 				C462C0B621C110AC000CEEED /* FavouriteRestaurantsViewModel.swift in Sources */,
@@ -258,6 +273,7 @@
 				C462C0AA21C1100A000CEEED /* DetailViewController.swift in Sources */,
 				C462C0B421C11096000CEEED /* AllRestaurantsViewModel.swift in Sources */,
 				C462C0B221C11072000CEEED /* MapViewModel.swift in Sources */,
+				C4288C2921C77331002C69B9 /* ReviewTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

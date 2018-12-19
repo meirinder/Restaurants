@@ -13,7 +13,7 @@ class RestaurantTableViewCell: UITableViewCell, UpdateImageProtocol {
     @IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var specificationLabel: UILabel!
-    @IBOutlet weak var ratingView: UIView!
+    @IBOutlet weak var ratingView: RatingView!
     @IBOutlet weak var ratingLabel: UILabel!
     
     weak var delegate: UpdateTableViewDelegate?

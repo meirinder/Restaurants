@@ -52,7 +52,17 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowRestaurantDetailSegue" {
+            if let indexPath = self.restaurantsTableView.indexPathForSelectedRow {
+                let restaurantAtIndexPath = restaurantViewModel.restaurantStore.restaurants()[indexPath.row]
+                let localRestaurantStore = RestaurantStore(restaurants: [restaurantAtIndexPath])
+                let localDetailViewModel = DetailViewModel(restaurantStroe: localRestaurantStore)
+                let destinationVC = segue.destination as! DetailViewController
+                destinationVC.detailViewModel = localDetailViewModel
+            }
+        }
+    }
 
 }
 
