@@ -32,8 +32,11 @@ class RestaurantsViewModel: NSObject {
     }
     
     func updateRestaurants(){
-        restaurantStore.updateRestaurantStore(){
+        restaurantStore.updateRestaurantStore(){ userData in
             self.fillItemStore(restaraunts: self.restaurantStore.restaurants())
+            if userData {
+                self.delegate?.stopRefreshing()
+            }
             self.delegate?.updateTableView()
             
         }

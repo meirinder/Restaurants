@@ -9,22 +9,36 @@
 import UIKit
 
 class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UpdateTableViewDelegate {
+   
+    func stopRefreshing() {
+        let deadline = DispatchTime.now() + .milliseconds(700)
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            self.refresher.endRefreshing()
+        }
+    }
     
+    lazy var refresher: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .red
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    @objc
+    func refreshData(){
+        restaurantViewModel.updateRestaurants()
+    }
     
     func updateTableView() {
         DispatchQueue.main.async {
-            self.restaurantsTableView.reloadData()
+            self.reloadTableView()
         }
     }
     
     
     var restaurantViewModel = RestaurantsViewModel()
 
-    
-    
     @IBOutlet weak var restaurantsTableView: UITableView!
-    
-   
     
     func reloadTableView() {
         restaurantsTableView.reloadData()
@@ -40,7 +54,9 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         restaurantViewModel.delegate = self
         restaurantViewModel.updateRestaurants()
-
+        
+        
+        restaurantsTableView.refreshControl = refresher
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -76,4 +92,5 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 
 protocol UpdateTableViewDelegate: class {
     func updateTableView()
+    func stopRefreshing()
 }

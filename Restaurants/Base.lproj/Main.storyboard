@@ -95,6 +95,7 @@
                                                 <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="kc1-Ds-4fs" secondAttribute="trailing" constant="278" id="qRk-1P-oWv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="ratingLabel" destination="pgi-3P-VNn" id="432-OD-aNL"/>
                                             <outlet property="ratingView" destination="5J7-so-GeM" id="e53-qW-wcT"/>
