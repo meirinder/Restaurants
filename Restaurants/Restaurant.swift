@@ -25,9 +25,23 @@ struct Restaurant: Decodable {
         imagePaths = nil
         rating = nil
     }
+    init(id: Int, name: String, description: String, address: String, lonLocation: Double, latLocation: Double, imagePath: String, rating: Float) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.address = address
+        self.imagePaths = []
+        self.imagePaths?.append(imagePath)
+        self.rating = rating
+        self.location = Location(lat: latLocation, lon: lonLocation)
+    }
 }
 
 struct Location: Decodable {
     let lat: Double?
     let lon: Double?
+    init(lat: Double, lon: Double) {
+        self.lon = lon
+        self.lat = lat
+    }
 }

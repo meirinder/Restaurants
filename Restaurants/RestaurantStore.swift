@@ -26,11 +26,17 @@ class RestaurantStore: NSObject {
         return restaurantsList
     }
     
-    func updateRestaurantStoreFromNet(completion: @escaping () -> ()){
-        httpConnector.getRestaurantsDataFrom(){ outData in
+    func updateRestaurantStore(completion: @escaping () -> ()){
+        let dbw = DataBaseWorker()
+        self.restaurantsList = dbw.loadRestaurants()
+        completion()
+        
+        httpConnector.getRestaurantsData(){ outData in
             self.restaurantsList = self.jsonParser.parseResaurantsData(data: outData)
-            
-            completion()
+            DispatchQueue.main.async {
+                dbw.saveCurrentRestaurants(restaurants: self.restaurantsList)
+                completion()
+            }
         }
     }
 

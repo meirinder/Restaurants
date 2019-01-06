@@ -26,10 +26,11 @@ class RestaurantsViewModel: NSObject {
         super.init()
     }
     
-    func updateRestaurantsFromNet(){
-        restaurantStore.updateRestaurantStoreFromNet(){
+    func updateRestaurants(){
+        restaurantStore.updateRestaurantStore(){
             self.fillItemStore(restaraunts: self.restaurantStore.restaurants())
             self.delegate?.updateTableView()
+            
         }
     }
     

@@ -25,7 +25,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var restaurantsTableView: UITableView!
     
     @IBAction func test(_ sender: Any) {
-        restaurantViewModel.updateRestaurantsFromNet()
+        restaurantViewModel.updateRestaurants()
 //        reloadTableView()
     }
     
@@ -36,6 +36,8 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         restaurantViewModel.delegate = self
+        restaurantViewModel.updateRestaurants()
+
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -58,6 +60,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
                 let restaurantAtIndexPath = restaurantViewModel.restaurantStore.restaurants()[indexPath.row]
                 let localRestaurantStore = RestaurantStore(restaurants: [restaurantAtIndexPath])
                 let localDetailViewModel = DetailViewModel(restaurantStore: localRestaurantStore)
+               
                 let destinationVC = segue.destination as! DetailViewController
                 destinationVC.detailViewModel = localDetailViewModel
             }

@@ -13,7 +13,7 @@ class HTTPConnector: NSObject {
     private let reviewLink =  "https://restaurants-f64d7.firebaseio.com/reviews.json?orderBy=\"restaurantId\"&equalTo="
 
     
-    func getRestaurantsDataFrom(completion: @escaping (Data) -> ()){
+    func getRestaurantsData(completion: @escaping (Data) -> ()){
         let testURL = URL(string: restaurantLink)!
         var request = URLRequest(url: testURL)
         request.httpMethod = "GET"
