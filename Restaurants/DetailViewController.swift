@@ -13,7 +13,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
  
     
-    
+    @IBOutlet weak var favouriteBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var heightImageViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var reviewsTableView: UITableView!
@@ -24,7 +24,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var restaurantLocationMapView: MKMapView!
     
-    
+    private let favouriteImage = UIImage(named: "favourite.png")
+    private let unfavouriteImage = UIImage(named: "unfavourite.png")
     var detailViewModel = DetailViewModel()
     
     
@@ -92,10 +93,21 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         detailViewModel.loadAllImages()
 
         detailViewModel.delegate = self
-        
+        setButtonImage()
     }
    
-   
+    private func setButtonImage() {
+        if detailViewModel.isFavouriteResturant() {
+            favouriteBarButtonItem.image = favouriteImage
+        }else {
+            favouriteBarButtonItem.image = unfavouriteImage
+        }
+    }
+    @IBAction func onClickFavouriteButton(_ sender: Any) {
+        detailViewModel.setFavourite()
+        setButtonImage()
+    }
+    
     func prepareForDisplay(){
         detailViewModel.loadMainImage()
         descriptionLabel.text = detailViewModel.restaurantSpecification()

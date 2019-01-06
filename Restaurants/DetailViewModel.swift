@@ -15,9 +15,42 @@ class DetailViewModel: NSObject, UpdateReviewsProtocol {
     private var isTappedCell: [Bool] = []
     private var isInstallableCell: [Bool] = []
     private let imageLoader = ImageLoader().shared()
+    private let defaults = UserDefaults.standard
+
     weak var delegate: UpdateDetailViewControllerDelegate?
     var mainImage = UIImage()
     private var otherImages: [UIImage] = []
+
+    func setFavourite(){
+        if isFavouriteResturant() {
+            var ids = defaults.array(forKey: "FavouriteRestaurantId")  as? [Int] ?? [Int]()
+            for i in 0..<ids.count {
+                if ids[i] == resaurantId() {
+                    ids.remove(at: i)
+                    defaults.set(ids, forKey: "FavouriteRestaurantId")
+                    return
+                }
+            }
+            print("Restaurant not found")
+        
+        }else {
+            var ids = defaults.array(forKey: "FavouriteRestaurantId")  as? [Int] ?? [Int]()
+            ids.append(resaurantId())
+            defaults.set(ids, forKey: "FavouriteRestaurantId")
+        }
+    }
+    
+    
+    
+    func isFavouriteResturant() -> Bool {
+        let ids = defaults.array(forKey: "FavouriteRestaurantId")  as? [Int] ?? [Int]()
+        for id in ids {
+            if id == resaurantId(){
+                return true
+            }
+        }
+        return false
+    }
     
     func updateData() {
         for _ in reviewStore.reviews() {

@@ -14,9 +14,10 @@ class DataBaseWorker: NSObject {
     private var realm = try! Realm()
     
     func saveCurrentRestaurants(restaurants: [Restaurant]) {
-        
+        try! realm.write {
+            realm.deleteAll()
+        }
         let restaurantRealmModel = convertModelToDataBaseModel(restaurants: restaurants)
-        
         try! realm.write {
             realm.add(restaurantRealmModel)
         }

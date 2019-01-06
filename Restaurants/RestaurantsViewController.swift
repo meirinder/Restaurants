@@ -24,15 +24,18 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var restaurantsTableView: UITableView!
     
-    @IBAction func test(_ sender: Any) {
-        restaurantViewModel.updateRestaurants()
-//        reloadTableView()
-    }
+   
     
     func reloadTableView() {
         restaurantsTableView.reloadData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        restaurantViewModel.updateRestaurants()
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         restaurantViewModel.delegate = self
@@ -43,7 +46,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurantViewModel.itemStore.count
+        return restaurantViewModel.resturantsCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,6 +65,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
                 let localDetailViewModel = DetailViewModel(restaurantStore: localRestaurantStore)
                
                 let destinationVC = segue.destination as! DetailViewController
+                
                 destinationVC.detailViewModel = localDetailViewModel
             }
         }
