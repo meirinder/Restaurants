@@ -13,6 +13,13 @@ struct Review: Codable{
     let author: String?
     let reviewText: String?
     let date: String?
+    
+    init(restaurantId: Int, author: String, reviewText: String, date: String) {
+        self.reviewText = reviewText
+        self.restaurantId = restaurantId
+        self.author = author
+        self.date = date
+    }
 }
 
 struct Safe<Base: Decodable>: Decodable {

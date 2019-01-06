@@ -39,4 +39,18 @@ class JSONParser: NSObject {
         return reviews
     }
     
+    func synthesizeReviewsData(review: Review) -> Data?{
+        let jsonEncoder = JSONEncoder()
+        do {
+            let jsonData = try jsonEncoder.encode(review)
+            return jsonData
+//            let jsonString = String(data: jsonData, encoding: .utf8)
+//            print("JSON String : " + jsonString!)
+        }
+        catch let error {
+            print(error)
+        }
+        return nil
+    }
+    
 }

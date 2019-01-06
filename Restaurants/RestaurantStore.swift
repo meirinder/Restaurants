@@ -12,8 +12,6 @@ class RestaurantStore: NSObject {
     private var restaurantsList: [Restaurant]
     private let httpConnector = HTTPConnector()
     private let jsonParser = JSONParser()
-    weak var delegate: UpdateRestaurantsProtocol?
-    
     
     override init() {
         self.restaurantsList = []
@@ -28,16 +26,12 @@ class RestaurantStore: NSObject {
         return restaurantsList
     }
     
-    func updateRestaurantsFromNet(url: String){
-        httpConnector.getRestaurantsDataFrom(url: url){ outData in
+    func updateRestaurantStoreFromNet(completion: @escaping () -> ()){
+        httpConnector.getRestaurantsDataFrom(){ outData in
             self.restaurantsList = self.jsonParser.parseResaurantsData(data: outData)
             
-            self.delegate?.updateData()
+            completion()
         }
     }
 
-}
-
-protocol UpdateRestaurantsProtocol: class{
-    func updateData()
 }

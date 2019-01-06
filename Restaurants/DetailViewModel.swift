@@ -13,8 +13,11 @@ class DetailViewModel: NSObject, UpdateReviewsProtocol {
     private var restaurantStore: RestaurantStore
     private var reviewStore: ReviewStore
     private var isTappedCell: [Bool] = []
+    private var isInstallableCell: [Bool] = []
+    private let imageLoader = ImageLoader().shared()
     weak var delegate: UpdateDetailViewControllerDelegate?
     var mainImage = UIImage()
+    private var otherImages: [UIImage] = []
     
     func updateData() {
         for _ in reviewStore.reviews() {
@@ -23,22 +26,43 @@ class DetailViewModel: NSObject, UpdateReviewsProtocol {
         delegate?.updateReviews()
     }
     
+    
     override init() {
         self.restaurantStore = RestaurantStore()
         self.reviewStore = ReviewStore()
         super.init()
         self.reviewStore.delegate = self
+        if let images = restaurantStore.restaurants().first?.imagePaths {
+            for _ in images  {
+                self.otherImages.append(UIImage())
+                self.isInstallableCell.append(false)
+            }
+        }
     }
     
-    init(restaurantStroe: RestaurantStore, reviewStore: ReviewStore = ReviewStore()) {
-        self.restaurantStore = restaurantStroe
+    func restaurantImagesCount() -> Int {
+        return (restaurantStore.restaurants().first?.imagePaths?.count)!
+    }
+    
+    init(restaurantStore: RestaurantStore, reviewStore: ReviewStore = ReviewStore()) {
+        self.restaurantStore = restaurantStore
         self.reviewStore = reviewStore
         super.init()
         self.reviewStore.delegate = self
+        if let images = restaurantStore.restaurants().first?.imagePaths {
+            for _ in images  {
+                self.otherImages.append(UIImage())
+                self.isInstallableCell.append(false)
+            }
+        }
+    }
+    
+    func imagesForCollectionView() -> [UIImage]{
+        return otherImages
     }
     
     func reviews(id: Int) {
-        reviewStore.updateRewiewsFromNet(url:"https://restaurants-75cfb.firebaseio.com/reviews.json?orderBy=\"restaurantId\"&equalTo=\(id)" )
+        reviewStore.updateRewiewsFromNet(id: id)
     }
     
     func heightOfCell(index: Int) -> Int {
@@ -108,14 +132,46 @@ class DetailViewModel: NSObject, UpdateReviewsProtocol {
         return (restaurantStore.restaurants().first?.location)!
     }
     
+    func resaurantId() -> Int {
+        return (restaurantStore.restaurants().first?.id)!
+    }
+    
     func loadMainImage(){
-        let imageBuilder = ImageBuilder()
         if let url = URL(string: ((restaurantStore.restaurants().first?.imagePaths?.first)!)) {
-            imageBuilder.getImageFromNet(url: url){ outImage in
+            imageLoader.getImageFromNet(url: url){ outImage in
                 self.mainImage = outImage
-                self.delegate?.updateImage()
+                self.delegate?.updateMainImage()
             }
         }
+    }
+    
+    func isInstallableImage(index: Int) -> Bool {
+        return isInstallableCell[index]
+    }
+
+    func loadAllImages(){
+        let images = (self.restaurantStore.restaurants().first?.imagePaths)!
+        for link in images {
+            if let url = URL(string: link) {
+                var item = 0
+                imageLoader.getImageFromNet(url: url){ outImage in
+                    for image in self.otherImages{
+                        if image == outImage {
+                            return
+                        }
+                    }
+                    for i in 0..<images.count{
+                        if images[i] == link {
+                            self.otherImages[i] = outImage
+                            self.isInstallableCell[i] = true
+                            item = i
+                        }
+                    }
+                    self.delegate?.updateOtherImages(item: item)
+                }
+            }
+        }
+        
     }
     
     

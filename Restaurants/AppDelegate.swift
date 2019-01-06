@@ -7,57 +7,53 @@
 //
 
 import UIKit
+import RealmSwift
+
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-//        var restaurantStore = RestaurantStore()
-//        var reviews = [String:Review]()
-        //
-//        HTTPConnector.getRestaurantsDataFrom(url:"https://restaurants-f64d7.firebaseio.com/restaurants.json"){outData in
-//            restaurants = JSONParser.parseResaurantsData(data: outData)
-        
-//        
-//        }
-//        HTTPConnector.getReviewsDataFrom(url: "https://restaurants-f64d7.firebaseio.com/reviews.json"){ outData in
-//            reviews = JSONParser.parseReviewsData(data: outData)
-//
-//        }
 
+        
+        
+        configureControllers(restaurantStore: RestaurantStore())
         
         // Override point for customization after application launch.
         return true
     }
 
-    func configureControllers(restaurants:[Restaurant]){
+    func configureControllers(restaurantStore:RestaurantStore){
         if (self.window?.rootViewController?.isKind(of: UITabBarController.self)) ?? false {
             let tabBarController = self.window?.rootViewController as! UITabBarController
             if (tabBarController.viewControllers?.first?.isKind(of: UINavigationController.self)) ?? false {
-                сonfigureAllRestaurantsViewController(tabBarController: tabBarController, restaurants: restaurants)
-                configureFavouriteViewConroller(tabBarController: tabBarController, restaurants: restaurants)
+                сonfigureAllRestaurantsViewController(tabBarController: tabBarController, restaurantStore: restaurantStore)
+                configureFavouriteViewConroller(tabBarController: tabBarController, restaurantStore: restaurantStore)
+                  configureMapViewController(tabBarController: tabBarController, restaurantStore: restaurantStore)
             }
             if (tabBarController.viewControllers?[2].isKind(of: MapViewController.self) ?? false){
-                configureMapViewController(tabBarController: tabBarController, restaurants: restaurants)
+//                configureMapViewController(tabBarController: tabBarController, restaurantStore: restaurantStore)
                 
             }
         }
     }
     
-    func configureMapViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
-        let mapViewController = tabBarController.viewControllers?[2] as! MapViewController
-        //mapViewController.loadView()
-        let mapViewModel = MapViewModel(restaurants: restaurants)
-        mapViewController.mapViewModel = mapViewModel
+    func configureMapViewController(tabBarController: UITabBarController,restaurantStore: RestaurantStore) {
+        let mapNavigationController = tabBarController.viewControllers?[2] as! UINavigationController
+        let mapViewModel = MapViewModel(restaurantStore: restaurantStore)
+        if (mapNavigationController.viewControllers.first?.isKind(of: MapViewController.self) ?? false){
+            let mapViewController = mapNavigationController.viewControllers.first as! MapViewController
+            mapViewController.mapViewModel = mapViewModel
+        }
        // mapViewController.test()
     }
     
-    func configureFavouriteViewConroller(tabBarController: UITabBarController,restaurants:[Restaurant]) {
-        let favouriteRestaurantsViewModel = FavouriteRestaurantsViewModel(restaurantStore: RestaurantStore())
+    func configureFavouriteViewConroller(tabBarController: UITabBarController,restaurantStore: RestaurantStore) {
+        let favouriteRestaurantsViewModel = FavouriteRestaurantsViewModel(restaurantStore: restaurantStore)
         let favouriteRestaurantsNavigationController = tabBarController.viewControllers?[1] as! UINavigationController
         if ((favouriteRestaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self)) ?? false){
             let favouriteRestaurantsViewController = favouriteRestaurantsNavigationController.viewControllers.first as! RestaurantsViewController
@@ -67,13 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func сonfigureAllRestaurantsViewController(tabBarController: UITabBarController,restaurants:[Restaurant]) {
-        let allRestaurantsViewModel = AllRestaurantsViewModel(restaurantStore: RestaurantStore())
+    func сonfigureAllRestaurantsViewController(tabBarController: UITabBarController,restaurantStore: RestaurantStore) {
+        let allRestaurantsViewModel = AllRestaurantsViewModel(restaurantStore: restaurantStore)
         let restaurantsNavigationController = tabBarController.viewControllers?.first as! UINavigationController
         if (restaurantsNavigationController.viewControllers.first?.isKind(of: RestaurantsViewController.self) ?? false){
             let restaurantsViewController = restaurantsNavigationController.viewControllers.first as! RestaurantsViewController
             restaurantsViewController.restaurantViewModel = allRestaurantsViewModel
-            restaurantsViewController.reloadTableView()
+//            restaurantsViewController.reloadTableView()
         }
     }
     

@@ -16,7 +16,15 @@ struct Restaurant: Decodable {
     let location: Location?
     let imagePaths: [String]?
     let rating: Float?
-    
+    init() {
+        id = nil
+        name = nil
+        description = nil
+        address = nil
+        location = nil
+        imagePaths = nil
+        rating = nil
+    }
 }
 
 struct Location: Decodable {

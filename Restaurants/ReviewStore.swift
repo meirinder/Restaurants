@@ -19,23 +19,24 @@ class ReviewStore: NSObject {
     
     override init() {
         reviewsDicitionary = [String:Review]()
+        
     }
     
     
-    func setRewiews( ) {
     
-    }
     
     func reviews() -> [Review] {
         return reviewsList
     }
     
-    func updateRewiewsFromNet(url: String){
-        httpConnector.getReviewsDataFrom(url: url){ outData in
+    func updateRewiewsFromNet(id: Int){
+        httpConnector.getReviewsDataFrom(id: id){ outData in
             self.reviewsDicitionary = self.jsonParser.parseReviewsData(data: outData)
+            self.reviewsList.removeAll()
             for value in self.reviewsDicitionary.values {
                 self.reviewsList.append(value)
             }
+            self.reviewsList = self.reviewsList.sorted(by: { ($0.date ?? "") < ($1.date ?? "") })
             self.delegate?.updateData()
         }
         

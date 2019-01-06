@@ -9,14 +9,16 @@
 import UIKit
 
 class HTTPConnector: NSObject {
+    private let restaurantLink = "https://restaurants-f64d7.firebaseio.com/restaurants.json"
+    private let reviewLink =  "https://restaurants-f64d7.firebaseio.com/reviews.json?orderBy=\"restaurantId\"&equalTo="
 
     
-    func getRestaurantsDataFrom(url: String,completion: @escaping (Data) -> ()){
-        let testURL = URL(string:url)!
-        var reqest = URLRequest(url: testURL)
-        reqest.httpMethod = "GET"
+    func getRestaurantsDataFrom(completion: @escaping (Data) -> ()){
+        let testURL = URL(string: restaurantLink)!
+        var request = URLRequest(url: testURL)
+        request.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: reqest){data,response,error in
+        let task = URLSession.shared.dataTask(with: request){data,response,error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 return
@@ -32,17 +34,19 @@ class HTTPConnector: NSObject {
         task.resume()
     }
     
-    func getReviewsDataFrom(url: String,completion: @escaping (Data) -> ()){
+    func getReviewsDataFrom(id: Int,completion: @escaping (Data) -> ()){
         
-        let firstPath = url.dropLast(25)
-        let lastPath = url.dropFirst(url.count - 25)
+        let link = reviewLink + "\(id)"
+        
+        let firstPath = link.dropLast(25)
+        let lastPath = link.dropFirst(link.count - 25)
         
         let encoded = lastPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         let testURL = URL(string:firstPath + encoded!)!
-        var reqest = URLRequest(url: testURL)
-        reqest.httpMethod = "GET"
+        var request = URLRequest(url: testURL)
+        request.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: reqest){data,response,error in
+        let task = URLSession.shared.dataTask(with: request){data,response,error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 return
@@ -54,6 +58,31 @@ class HTTPConnector: NSObject {
 //               let responseString = String(data: data, encoding: .utf8)
 //               print("responseString = \(String(describing: responseString))")
             completion(data)
+        }
+        task.resume()
+    }
+    
+    func postReviewData(data: Data, link: String, completion: @escaping (Bool) -> ()) {
+        let testURL = URL(string: link)!
+        var request = URLRequest(url: testURL)
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = data
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                completion(false)
+                return
+            }
+
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response ?? nil))")
+            }
+            
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(String(describing: responseString))")
+            completion(true)
         }
         task.resume()
     }

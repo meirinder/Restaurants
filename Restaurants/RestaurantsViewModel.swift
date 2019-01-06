@@ -8,11 +8,8 @@
 
 import UIKit
 
-class RestaurantsViewModel: NSObject,UpdateRestaurantsProtocol {
-    func updateData() {
-        fillItemStore(restaraunts: restaurantStore.restaurants())
-        delegate?.updateTableView()
-    }
+class RestaurantsViewModel: NSObject {
+    
     
     var itemStore: [Item] = []
     var restaurantStore: RestaurantStore
@@ -22,17 +19,18 @@ class RestaurantsViewModel: NSObject,UpdateRestaurantsProtocol {
     override init() {
         self.restaurantStore = RestaurantStore()
         super.init()
-        self.restaurantStore.delegate = self
     }
     
     init(restaurantStore: RestaurantStore) {
         self.restaurantStore = restaurantStore
         super.init()
-        self.restaurantStore.delegate = self
     }
     
     func updateRestaurantsFromNet(){
-        restaurantStore.updateRestaurantsFromNet(url: "https://restaurants-f64d7.firebaseio.com/restaurants.json")
+        restaurantStore.updateRestaurantStoreFromNet(){
+            self.fillItemStore(restaraunts: self.restaurantStore.restaurants())
+            self.delegate?.updateTableView()
+        }
     }
     
     private func fillItemStore(restaraunts: [Restaurant]) {

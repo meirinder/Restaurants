@@ -57,7 +57,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
             if let indexPath = self.restaurantsTableView.indexPathForSelectedRow {
                 let restaurantAtIndexPath = restaurantViewModel.restaurantStore.restaurants()[indexPath.row]
                 let localRestaurantStore = RestaurantStore(restaurants: [restaurantAtIndexPath])
-                let localDetailViewModel = DetailViewModel(restaurantStroe: localRestaurantStore)
+                let localDetailViewModel = DetailViewModel(restaurantStore: localRestaurantStore)
                 let destinationVC = segue.destination as! DetailViewController
                 destinationVC.detailViewModel = localDetailViewModel
             }

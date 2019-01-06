@@ -29,10 +29,14 @@ class RestaurantTableViewCell: UITableViewCell, UpdateImageProtocol {
         restaurantImageView.image = item.photo
         restaurantNameLabel.text = item.name
         specificationLabel.text = item.specification
-        ratingLabel.text = "\(item.rating)"
+        ratingLabel.isHidden = true
+//        ratingLabel.text = "\(item.rating)"
+        ratingView.percent =  CGFloat(item.rating/10)
+        ratingView.setNeedsDisplay()
         item.delegate = self
         item.setImages()
     }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -68,6 +68,12 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepareForDisplay()
+
+        reviewsTableView.reloadData()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +89,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         restaurantLocationMapView.showAnnotations([sourceAnnotation], animated: true)
         
+        detailViewModel.loadAllImages()
+
         detailViewModel.delegate = self
-        prepareForDisplay()
-        reviewsTableView.reloadData()
+        
     }
    
    
@@ -122,11 +129,16 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 
 extension DetailViewController: UpdateDetailViewControllerDelegate{
-    func updateImage() {
+    func updateOtherImages(item: Int) {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(item: item, section: 0)
+            self.restaurantImagesCollectionView.reloadItems(at: [indexPath])
+        }
+    }
+    
+    func updateMainImage() {
         DispatchQueue.main.async {
             self.restaurantImageView.image = self.detailViewModel.mainImage
-            print(self.detailViewModel.mainImage.size.height)
-            print(self.detailViewModel.mainImage.size.width)
             self.heightImageViewConstraint.constant = self.detailViewModel.calculateHeightImageViewConstraint(imageHeight: self.detailViewModel.mainImage.size.height, imageWidth: self.detailViewModel.mainImage.size.width, imageViewWidthConstarint: self.restaurantImageView.bounds.width)
             self.view.layoutIfNeeded()
         }
@@ -136,11 +148,38 @@ extension DetailViewController: UpdateDetailViewControllerDelegate{
             self.reviewsTableView.reloadData()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddReviewSegue" {
+            let localAddReviewViewModel = AddReviewViewModel(restaurantId: detailViewModel.resaurantId())
+            let destinationVC = segue.destination as! AddReviewViewController
+            destinationVC.addReviewViewModel = localAddReviewViewModel
+        }
+    }
 }
 
-
+extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return detailViewModel.restaurantImagesCount()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = restaurantImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        cell.backgroundImageView.image = detailViewModel.imagesForCollectionView()[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if detailViewModel.isInstallableImage(index: indexPath.row){
+            detailViewModel.mainImage = detailViewModel.imagesForCollectionView()[indexPath.row]
+            self.updateMainImage()
+        }
+    }
+    
+}
 
 protocol UpdateDetailViewControllerDelegate: class {
-    func updateImage()
+    func updateMainImage()
+    func updateOtherImages(item: Int)
     func updateReviews()
 }

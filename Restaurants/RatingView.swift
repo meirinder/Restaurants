@@ -9,51 +9,50 @@
 import UIKit
 
 class RatingView: UIView {
-    private struct Constants {
-        static let plusLineWidth: CGFloat = 2.0
-        static let plusButtonScale: CGFloat = 0.6
-        static let halfPointShift: CGFloat = 0.5
-    }
     
-    private var halfWidth: CGFloat {
-        return bounds.width / 2
-    }
+    var percent: CGFloat = CGFloat(integerLiteral: 0)
     
-    private var halfHeight: CGFloat {
-        return bounds.height / 2
-    }
-    
-    
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         
+        let path = UIBezierPath(rect: rect)
+        let ctx: CGContext = UIGraphicsGetCurrentContext()!
+        ctx.saveGState()
+        for i in 0..<5{
+            drawStar(path: path, x: (rect.size.width/5)*CGFloat(i)+rect.size.height/2, y: (rect.size.height/2),radius: (rect.size.height/2))
+        }
+        let clipPath: CGPath = path.cgPath
         
-        
-        let path = UIBezierPath(rect: rect)    //UIBezierPath(ovalIn: rect)
+        ctx.addPath(clipPath)
+        ctx.closePath()
+        ctx.fillPath()
+        ctx.restoreGState()        
+        let width = rect.size.width * percent
+        ctx.setFillColor(UIColor.red.cgColor)
+        ctx.fill(CGRect( x: 0, y: 0, width: width, height: rect.size.height))
         UIColor.green.setFill()
         path.fill()
-        for i in 1..<6{
-            drawStar(x: (rect.size.width/6)*CGFloat(i),y: (rect.size.height/2),radius: (rect.size.height/2-2))
-        }
-
-
     }
     
-    func drawStar(x: CGFloat, y: CGFloat, radius: CGFloat){
-        let points = polygonPointArray(sides: 5, x: x, y: y, radius: radius, adjustment: 18)
-        let plusPath = UIBezierPath()
-        plusPath.lineWidth = Constants.plusLineWidth
+    func drawStar(path: UIBezierPath,x: CGFloat, y: CGFloat, radius: CGFloat, adjustment: CGFloat = 18){
+        let points = polygonPointArray(sides: 5, x: x, y: y, radius: radius, adjustment: adjustment)
+        let miniPoints = polygonPointArray(sides: 5, x: x, y: y, radius: 2/5*radius-2, adjustment: adjustment - 36)
+        var allPoints = [CGPoint]()
+        for i in 0..<11 {
+            if i%2 == 0{
+                allPoints.append(points[i/2])
+            }else {
+                allPoints.append(miniPoints[i/2])
+            }
+        }
+//        let path = UIBezierPath()
+        path.lineWidth = 2.0
         
-        plusPath.move(to: points[0])
-        var index = 0
-        for _ in 0..<5{
-            index += 3
-            index %= 5
-            plusPath.addLine(to: points[index])
+        path.move(to: allPoints[0])
+        for i in 0..<11{
+            path.addLine(to: allPoints[i])
         }
         UIColor.white.setStroke()
-        plusPath.stroke()
+        path.stroke()
     }
 
     func degree2radian(a:CGFloat)->CGFloat {

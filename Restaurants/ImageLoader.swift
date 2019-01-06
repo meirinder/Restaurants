@@ -1,19 +1,53 @@
 //
-//  ImageBuilder.swift
+//  ImageStore.swift
 //  Restaurants
 //
-//  Created by Savely on 14.12.2018.
+//  Created by Savely on 18.12.2018.
 //  Copyright © 2018 Kulizhnikov. All rights reserved.
 //
 
 import UIKit
 
-class ImageBuilder: NSObject {
+enum ImageStatus{
+    case loaded(image: UIImage)
+    case loading(completions: [(UIImage) -> ()])
+}
+
+class ImageLoader: NSObject {
     
-    var imageStore = ImageStore().shared()
+    private static let sharedInstanse = ImageLoader()
+    
+    private var imageDictionary: [URL: ImageStatus?]
+    
+    override init() {
+        imageDictionary = [:]
+    }
+    
+    func setPair(url:URL, imageStatus: ImageStatus) {
+            imageDictionary[url] = imageStatus
+    }
+    
+    func updatePair(url: URL, image: UIImage) {
+        imageDictionary.updateValue(ImageStatus.loaded(image: image), forKey: url)
+    }
+    
+    func updateCompletion(url: URL, newCompletions: [(UIImage) -> ()]){
+        imageDictionary.updateValue(ImageStatus.loading(completions: newCompletions), forKey: url)
+    }
+    
+    func tryGetImageStatusWithUrl(url: URL) -> (ImageStatus?) {
+        if let image = imageDictionary[url] {
+             return image
+        }
+        return (nil)
+    }
+    
+    func shared() -> ImageLoader {
+        return ImageLoader.sharedInstanse
+    }
     
     func getImageFromNet(url: URL,completion: @escaping (UIImage) -> ()) {
-        let imageCheck = imageStore.tryGetImageStatusWithUrl(url: url)
+        let imageCheck = self.tryGetImageStatusWithUrl(url: url)
         
         if let imageCheck = imageCheck {
             switch imageCheck {
@@ -22,7 +56,7 @@ class ImageBuilder: NSObject {
                 return
             case .loading(var completions):
                 completions.append(completion)
-                imageStore.updateCompletion(url: url, newCompletions: completions)
+                self.updateCompletion(url: url, newCompletions: completions)
                 return
             }
         }
@@ -31,18 +65,18 @@ class ImageBuilder: NSObject {
         }
     }
     
-
+    
     private func downloadImage(from url: URL, completion: @escaping (UIImage) -> ()) {
         print("Download Started")
-        self.imageStore.setPair(url: url, imageStatus: .loading(completions: [completion]))
+        self.setPair(url: url, imageStatus: .loading(completions: [completion]))
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             print(response?.suggestedFilename ?? url.lastPathComponent)
             print("Download Finished")
             
-            let imageStatus = self.imageStore.tryGetImageStatusWithUrl(url: url)
+            let imageStatus = self.tryGetImageStatusWithUrl(url: url)
             
-            self.imageStore.updatePair(url: url, image: UIImage(data: data)!)
+            self.updatePair(url: url, image: UIImage(data: data)!)
             
             if let imageStatus = imageStatus {
                 switch imageStatus{
@@ -61,3 +95,4 @@ class ImageBuilder: NSObject {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
 }
+

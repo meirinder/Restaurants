@@ -11,25 +11,43 @@ import MapKit
 
 class MapViewModel: NSObject {
 
-    let restaurants: [Restaurant]
+    let restaurantStore: RestaurantStore
     var annotations: [MKAnnotation] = []
+    var currentTitle: String = ""
     
     override init() {
-        restaurants = [Restaurant]()
+        restaurantStore = RestaurantStore()
     }
     
-    init(restaurants: [Restaurant]) {
-        self.restaurants = restaurants
+    init(restaurantStore: RestaurantStore) {
+        self.restaurantStore = restaurantStore
+    }
+    
+    
+    func searchIndex() -> Int{
+        for i in 0..<restaurantStore.restaurants().count {
+            if restaurantStore.restaurants()[i].name == currentTitle{
+                return i
+            }
+        }
+        return 0
     }
     
     func buildAnnotations() -> [MKAnnotation] {
-        for restaurant in restaurants {
+        if restaurantStore.restaurants().first?.id == nil {
+            return annotations
+        }
+        for restaurant in restaurantStore.restaurants() {
             let sourceLocation = CLLocationCoordinate2D(latitude: (restaurant.location?.lat)!, longitude: (restaurant.location?.lon)!)
             let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
             let sourceAnnotation = MKPointAnnotation()
+            
+            sourceAnnotation.title = restaurant.name
+            
             if let location = sourcePlacemark.location {
                 sourceAnnotation.coordinate = location.coordinate
             }
+            
             annotations.append(sourceAnnotation)
         }
         
