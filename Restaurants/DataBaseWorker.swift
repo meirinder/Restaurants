@@ -11,23 +11,22 @@ import RealmSwift
 
 class DataBaseWorker: NSObject {
 
-    private var realm = try! Realm()
+    private var realm = try? Realm()
     
     func saveCurrentRestaurants(restaurants: [Restaurant]) {
-        try! realm.write {
-            realm.deleteAll()
+        try? realm?.write {
+            realm?.deleteAll()
         }
         let restaurantRealmModel = convertModelToDataBaseModel(restaurants: restaurants)
-        try! realm.write {
-            realm.add(restaurantRealmModel)
+        try? realm?.write {
+            realm?.add(restaurantRealmModel)
         }
     }
     
     func loadRestaurants() -> [Restaurant] {
         var resultRestaurants: Results<RestaurantsRealmModel>!
-        let realm = try! Realm()
-        try! realm.write {
-            resultRestaurants = realm.objects(RestaurantsRealmModel.self)
+        try? realm?.write {
+            resultRestaurants = realm?.objects(RestaurantsRealmModel.self)
         }
         return convertDataBaseModelToModel(resultRestaurants: resultRestaurants)
     }
